@@ -1,3 +1,5 @@
+Éste proyecto fue basado en el proyecto de ejemplo del profesor. Se realizaron las modificaciones correspondientes al CRUD de la base de datos.
+
 # Hello MVC
 
 Proyecto básico que muestra como se implementa el patrón de diseño: MVC en Node.js. 
