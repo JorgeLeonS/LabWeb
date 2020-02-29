@@ -1,0 +1,16 @@
+<h1>Tarea 1</h1>
+<p>Laboratorio de Desarrollo Web</p>
+<h2>Jorge León Salas A01337252</h2>
+<ul>
+    {{#each products}}
+    <li>
+        Nombre: {{name}} ($ {{price}})
+    </li>
+        <a href="/editProduct/{{id}}">Editar Producto</a>
+        
+        <a href="/seeProduct/{{id}}">Ver Producto</a>
+
+        
+    {{/each}}
+</ul>
+<a href="/createProduct">Agregar Producto</a>
