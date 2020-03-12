@@ -1,0 +1,17 @@
+<h1 style="text-align: center">List of Users</h1>
+<table align="center" style="width: 30%">
+    <tr>
+        <th >Name</th>
+        <th >Email</th>
+        <th >Role</th>
+    </tr>
+
+    {{#each users}}
+        <tr>
+            <td >{{name}}</td>
+            <td >{{email}}</td>
+            <td >{{role}}</td>
+        </tr>
+    {{/each}}
+
+</table>
