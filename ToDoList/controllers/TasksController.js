@@ -25,3 +25,14 @@ exports.done = (req, res) => {
     res.redirect('/');
   });
 }
+
+exports.delete = (req, res) => {
+  let deleteId = req.params.id;
+  Task.delete(deleteId).then(() => {
+    if(req.xhr || req.headers.accept.indexOf("json") > -1){
+      res.json({id : deleteId});
+    }  else {
+      res.redirect('/');
+    }
+  });
+}

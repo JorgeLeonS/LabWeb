@@ -19,14 +19,18 @@
   <div class="row">
     <div class="col-lg-12" id="taskList">
       {{#each tasks}}
-      <div class="card my-3 {{#eq status 'done' }}bg-light{{/eq}}">
+      <div class="card my-3 {{#eq status 'done' }}bg-light{{/eq}}" id="cardID{{id}}">
         <div class="card-body">
           <p class="card-text">{{ description }}</p>
           {{#eq status 'pending'}}
-          <form method="POST" action="/tasks/{{id}}/done">
-            <a href="javascript:;" class="card-link" onclick="parentNode.submit();">Done</a>
+          <form method="POST" action="/tasks/{{id}}/done" id="formID{{id}}">
+            <a href="javascript:;" class="card-link" onclick="taskDone({{id}});">Done</a>
           </form>
-            
+          {{/eq}}
+          {{#eq status 'done'}}
+          <form method="POST" action="/tasks/{{id}}/delete" id="formID{{id}}">
+            <a href="javascript:;" class="card-link" onclick="deleteTask({{id}});">Delete</a>
+          </form>
           {{/eq}}
         </div>
       </div>
@@ -34,6 +38,7 @@
     </div>
   </div>
 </main>
+
 <script>
   function saveTask(){
     let description = document.getElementById('taskDescription').value;
@@ -59,17 +64,85 @@
       console.log('Error: ', error);
     })
   }
+
+//Agregar Task
   function addTask(task){
     let html = `
-    <div class="card my-3">
+    <div class="card my-3" id="taskCard-${task.id}">
         <div class="card-body">
           <p class="card-text">${task.description}</p>
-          <form method="POST" action="/tasks/${task.id}/done">
-            <a href="javascript:;" class="card-link" onclick="parentNode.submit();">Done</a>
+          <form method="POST" action="/tasks/${task.id}/done" id="formID${task.id}">
+            <a href="javascript:;" class="card-link" onclick="taskDone(${task.id});">Done</a>
           </form>
         </div>
       </div>`;
       let node = document.createRange().createContextualFragment(html);
       document.getElementById('taskList').prepend(node);
   }
+
+  //Task como done
+  function taskDone(id) {
+    let body = {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type' : 'application/json'
+      },
+      body: ""
+    };
+    let route = '/tasks/' + id + '/done';
+    fetch(route, body)
+            .then(response => {
+              if(response.ok) {
+                return response.json();
+              } else {
+                throw "Error en la llamada AJAX";
+              }
+            })
+            .then(task => {
+              let html =  `<div class="card my-3" id="taskCard-${task.id}"> <div class="card-body">
+                                <p class="card-text">${task.description}</p>
+                                <form method="POST" action="/tasks/${task.id}/delete" id="formID${task.id}">
+                                <a href="javascript:;" class="card-link" onclick="deleteTask(${task.id});">Delete</a>
+                            </form>
+                            </div>
+                </div>`;
+              
+              let formId = "formID" + task.id;
+              document.getElementById(formId).innerHTML = html;
+              let cardId = "cardID" + task.id;
+              document.getElementById(cardId).classList.add('bg-light');
+            })
+            .catch(error => {
+              console.log("Error: ", error);
+            });
+  }
+
+  function deleteTask(id){
+    let body = {
+      method: 'DELETE',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type' : 'application/json'
+      },
+      body: ""
+    };
+    let route = '/tasks/' + id + '/delete';
+    fetch(route, body)
+            .then(response => {
+              if(response.ok) {
+                return response.json();
+              } else {
+                throw "Error en la llamada AJAX";
+              }
+            })
+            .then(task => {
+              let cardId = "cardID" + task.id;
+              document.getElementById(cardId).remove();
+            })
+            .catch(error => {
+              console.log("Error: ", error);
+            });
+  }
+
 </script>

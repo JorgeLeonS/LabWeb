@@ -25,3 +25,9 @@ exports.markAsDone = (task) => {
   .update({status : this.DONE})
   .where('id', task.id);
 }
+
+exports.delete = (id) => {
+  return knex('tasks')
+  .where('id', id)
+  .del();
+}
