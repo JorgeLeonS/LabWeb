@@ -1,0 +1,29 @@
+<main role="main" class="container">
+  <div class="starter-template">
+    <h1>My records</h1>
+  </div>
+  <div class="row">
+    <div class="col-12">
+      <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Name</th>
+                <th>Artist</th>
+                <th>Year</th>
+            </tr>
+        </thead>
+        <tbody>
+            {{#each records}}
+            <tr>
+                <td>{{ this.id }}</td>
+                <td>{{ this.name }}</td>
+                <td>{{ this.artist }}</td>
+                <td>{{ this.year }}</td>
+            </tr>
+            {{/each}}
+        </tbody>
+    </table>
+    </div>
+  </div>
+</main>
